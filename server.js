@@ -2,7 +2,8 @@
 // =============================================================
 var express = require("express");
 var path = require("path");
-var fs =require("fs")
+// var fs =require("fs")
+var storage = require("./db/storage.js")
 
 // Sets up the Express App
 // =============================================================
@@ -17,12 +18,39 @@ app.listen(PORT, function() {
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
+app.use(express.static("public"))
 
 
 // The application should have a `db.json` file on the backend that will be used to store and retrieve notes using the `fs` module.
-var notebook = fs.readFileSync('./db/db.json','utf8')
-console.log(data)
+// var notebook = fs.readFileSync('./db/db.json','utf8')
+// console.log(notebook)
+
+
+//  GET `/api/notes` - Should read the `db.json` file and return all saved notes as JSON.
+app.get("/api/notes", function(req, res) {
+  // var jsonnotebook = JSON.parse(notebook)
+  // console.log("jsonnotebook",jsonnotebook)
+  var notebook = storage.getNotes()
+  res.json(notebook);
+});
+
+//Create new note
+app.post("/api/notes",function(req,res){
+
+  var newNote = req.body;
+
+ console.log(newNote);
+
+  storage.addNote(newNote)
+  // newNote.uniqueID = 
+
+   res.json(newNote);
+});
+
+app.delete("/api/notes/:id",function(req,res){
+  storage.deleteNote(req.params.id);
+  res.json({ok:true})
+})
 
 //* GET `*` - Should return the `index.html` file
 app.get("/", function(req, res) {
@@ -37,10 +65,7 @@ app.get("/notes", function(req, res) {
 // The following API routes should be created:
 
 
-//  GET `/api/notes` - Should read the `db.json` file and return all saved notes as JSON.
-app.get("/api/notes", function(req, res) {
-  return res.json(notebook);
-});
+
 
 
 
@@ -58,18 +83,7 @@ app.get("/api/notes", function(req, res) {
 // });
   
 //   * POST `/api/notes` - Should receive a new note to save on the request body, add it to the `db.json` file, and then return the new note to the client.
-//Create new note
-app.post("/api/characters",function(req,res){
 
-  var newNote = req.body;
-
- console.log(newNote);
-
-  data.push(newNote);
-  // newNote.uniqueID = 
-
-   res.json(newNote);
-});
   
 
  
