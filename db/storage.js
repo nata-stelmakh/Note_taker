@@ -1,4 +1,4 @@
-var fs =require("fs")
+var fs = require("fs")
 const uuidv1 = require("uuid/v1")
 
 // var notebook = fs.readFileSync('./db/db.json','utf8')
@@ -17,8 +17,8 @@ addNote(note){
     var notebook = fs.readFileSync('./db/db.json','utf8')
     var jsonnotebook = JSON.parse(notebook)
     var {title,text} = note
-    var newNote = {title,text,id:uuidv1()}
-    var notes = [...jsonnotebook,newNote]
+    var anotherNote = {title,text,id:uuidv1()}
+    var notes = [...jsonnotebook,anotherNote]
     var stringnotes = JSON.stringify(notes)
     fs.writeFileSync('./db/db.json',stringnotes)
     console.log(notes)

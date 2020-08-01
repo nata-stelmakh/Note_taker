@@ -2,13 +2,14 @@
 // =============================================================
 var express = require("express");
 var path = require("path");
-// var fs =require("fs")
 var storage = require("./db/storage.js")
 
 // Sets up the Express App
 // =============================================================
+
 var app = express();
 var PORT =process.env.PORT ||3000;
+
 // Starts the server to begin listening
 // =============================================================
 app.listen(PORT, function() {
@@ -22,9 +23,6 @@ app.use(express.static("public"))
 
 
 // The application should have a `db.json` file on the backend that will be used to store and retrieve notes using the `fs` module.
-// var notebook = fs.readFileSync('./db/db.json','utf8')
-// console.log(notebook)
-
 
 //  GET `/api/notes` - Should read the `db.json` file and return all saved notes as JSON.
 app.get("/api/notes", function(req, res) {
@@ -36,15 +34,10 @@ app.get("/api/notes", function(req, res) {
 
 //Create new note
 app.post("/api/notes",function(req,res){
-
-  var newNote = req.body;
-
- console.log(newNote);
-
-  storage.addNote(newNote)
-  // newNote.uniqueID = 
-
-   res.json(newNote);
+var anotherNote = req.body;
+console.log(anotherNote);
+storage.addNote(anotherNote)
+    res.json(anotherNote);
 });
 
 app.delete("/api/notes/:id",function(req,res){
@@ -63,29 +56,5 @@ app.get("/notes", function(req, res) {
 });
 
 // The following API routes should be created:
-
-
-
-
-
-
-//   var savedNote = req.body.data;
-  
-//   console.log(savedNote);
-
-//   for (var i = 0; i < data.length; i++) {
-//     if (savedNote === data[i].noteTitle) {
-//       return res.json(data[i]);
-//     }
-//   }
-
-//   return res.json(false);
-// });
-  
 //   * POST `/api/notes` - Should receive a new note to save on the request body, add it to the `db.json` file, and then return the new note to the client.
-
-  
-
- 
-
 //   * DELETE `/api/notes/:id` - Should receive a query parameter containing the id of a note to delete. This means you'll need to find a way to give each note a unique `id` when it's saved. In order to delete a note, you'll need to read all notes from the `db.json` file, remove the note with the given `id` property, and then rewrite the notes to the `db.json` file.
